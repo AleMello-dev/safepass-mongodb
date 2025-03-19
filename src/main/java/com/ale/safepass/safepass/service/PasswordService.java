@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ale.safepass.safepass.exception.PasswordNotFoundException;
 import com.ale.safepass.safepass.exception.PasswordServiceException;
 import com.ale.safepass.safepass.model.Password;
 import com.ale.safepass.safepass.repository.PasswordRepository;
@@ -34,9 +35,9 @@ public class PasswordService {
 	        }
 	    }
 
-	    public Password findByService(String service) {
-	        return repository.findByService(service)
-	            .orElseThrow(() -> new PasswordServiceException("Password not found for service: " + service));
+	    public Password findByService(String serviceName) {
+	        return repository.findByService(serviceName)
+	                .orElseThrow(() -> new PasswordNotFoundException("Password not found for service " + serviceName));
 	    }
 	    public void delete(String id) {
 	        try {
