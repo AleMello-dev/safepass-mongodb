@@ -1,7 +1,6 @@
 package com.ale.safepass.safepass.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,36 +17,34 @@ import com.ale.safepass.safepass.service.PasswordService;
 @RequestMapping("/password")
 public class PasswordController {
 
-	    private final PasswordService service;
+    private final PasswordService service;
 
-	    public PasswordController(PasswordService service) {
-	        this.service = service;
-	    }
+    public PasswordController(PasswordService service) {
+        this.service = service;
+    }
 
-	    @GetMapping
-	    public List<Password> listAll() {
-	        return service.listAll();
-	    }
+    @GetMapping
+    public List<Password> listAll() {
+        return service.listAll();
+    }
 
-	    @PostMapping
-	    public Password save(@RequestBody Password password) {
-	        return service.save(password);
-	    }
+    @PostMapping
+    public Password save(@RequestBody Password password) {
+        return service.save(password);
+    }
 
-	    @GetMapping("/{service}")
-	    public Optional<Password> findByService(@PathVariable String service) {
-	        return this.service.findByService(service); 
-	    }
+    @GetMapping("/{service}")
+    public Password findByService(@PathVariable String serviceName) {
+        return service.findByService(serviceName);
+    }
 
-	    @DeleteMapping("/{id}")
-	    public void delete(@PathVariable String id) {
-	        service.delete(id);
-	    }
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable String id) {
+        service.delete(id);
+    }
 
-	    @GetMapping("/generate/{size}")
-	    public String gerarSenha(@PathVariable int size) {
-	        return service.generatePassword(size);
-	    }
-	}
-
-
+    @GetMapping("/generate/{size}")
+    public String generatePassword(@PathVariable int size) {
+        return service.generatePassword(size);
+    }
+}

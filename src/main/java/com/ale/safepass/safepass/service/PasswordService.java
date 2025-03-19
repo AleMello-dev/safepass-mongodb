@@ -2,11 +2,11 @@ package com.ale.safepass.safepass.service;
 
 import java.security.SecureRandom;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ale.safepass.safepass.exception.PasswordServiceException;
 import com.ale.safepass.safepass.model.Password;
 import com.ale.safepass.safepass.repository.PasswordRepository;
 
@@ -26,16 +26,24 @@ public class PasswordService {
 	    }
 
 	    public Password save(Password password) {
-	    	password.setHashPassword(encoder.encode(password.getHashPassword())); 
-	        return repository.save(password);
+	        try {
+	            password.setHashPassword(encoder.encode(password.getHashPassword()));
+	            return repository.save(password);
+	        } catch (Exception e) {
+	            throw new PasswordServiceException("Error saving password for service: " + password.getService());
+	        }
 	    }
 
-	    public Optional<Password> findByService(String service) {
-	        return repository.findByService(service);
+	    public Password findByService(String service) {
+	        return repository.findByService(service)
+	            .orElseThrow(() -> new PasswordServiceException("Password not found for service: " + service));
 	    }
-
 	    public void delete(String id) {
-	        repository.deleteById(id);
+	        try {
+	            repository.deleteById(id);
+	        } catch (Exception e) {
+	            throw new PasswordServiceException("Error deleting password with id: " + id);
+	        }
 	    }
 
 	    public String generatePassword (int size) {
