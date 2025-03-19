@@ -27,12 +27,11 @@ public class PasswordService {
 	    }
 
 	    public Password save(Password password) {
-	        try {
-	            password.setHashPassword(encoder.encode(password.getHashPassword()));
-	            return repository.save(password);
-	        } catch (Exception e) {
-	            throw new PasswordServiceException("Error saving password for service: " + password.getService());
+	        if (password.getHashPassword() == null || password.getHashPassword().isBlank()) {
+	            throw new IllegalArgumentException("password cannot be empty");
 	        }
+	        password.setHashPassword(encoder.encode(password.getHashPassword()));
+	        return repository.save(password);
 	    }
 
 	    public Password findByService(String serviceName) {

@@ -33,7 +33,7 @@ public class PasswordController {
         return service.save(password);
     }
 
-    @GetMapping("/{service}")
+    @GetMapping("/service/{serviceName}")
     public Password findByService(@PathVariable String serviceName) {
         return service.findByService(serviceName);
     }
@@ -43,7 +43,7 @@ public class PasswordController {
         service.delete(id);
     }
 
-    @GetMapping("/generate/{size}")
+    @PostMapping("/generate")
     public String generatePassword(@PathVariable int size) {
         return service.generatePassword(size);
     }
