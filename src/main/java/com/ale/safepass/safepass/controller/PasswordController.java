@@ -25,18 +25,18 @@ public class PasswordController {
 	    }
 
 	    @GetMapping
-	    public List<Password> listarTodas() {
+	    public List<Password> listAll() {
 	        return service.listAll();
 	    }
 
 	    @PostMapping
-	    public Password salvar(@RequestBody Password password) {
+	    public Password save(@RequestBody Password password) {
 	        return service.save(password);
 	    }
 
 	    @GetMapping("/{service}")
 	    public Optional<Password> findByService(@PathVariable String service) {
-	        return service.findByService(service);
+	        return this.service.findByService(service); 
 	    }
 
 	    @DeleteMapping("/{id}")
